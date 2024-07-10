@@ -20,7 +20,7 @@ public class EssentialController {
         this.essentialService = essentialService;
     }
 
-    // 1단계: api/v1/date API - 날짜 리스트를 프론트로 보내기
+    // 1단계: api/v1/date API - 날짜 리스트를 트로 보내기
     @GetMapping("/date")
     public List<String> getDates() {
         return essentialService.getDates();
