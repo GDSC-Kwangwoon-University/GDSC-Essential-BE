@@ -1,5 +1,6 @@
 package gdsc.essential.essential.service;
 
+import gdsc.essential.essential.controller.EssentialService;
 import gdsc.essential.presentor.Presentor;
 import gdsc.essential.seminar.RecentSubmitSeminarInfo;
 import gdsc.essential.seminar.Seminar;
@@ -13,10 +14,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EssentialService {
+public class EssentialServiceImpl implements EssentialService {
 
     private final SeminarManager seminarManager;
 
+    @Override
     public void addPresentor(SubmitRequestDto submitRequestDto) {
         Optional<Seminar> seminarByDate = seminarManager.findSeminarByDate(
             submitRequestDto.getSeminarDate());
@@ -32,15 +34,18 @@ public class EssentialService {
     }
 
 
+    @Override
     public List<LocalDate> exractSeminarDates() {
         return seminarManager.extractAllSeminarDate();
     }
 
 
+    @Override
     public RecentSubmitSeminarInfo recentSeminarRequest(){
         return seminarManager.getRecentRequestSeminar();
     }
 
+    @Override
     public void addSeminarDate(LocalDate localDate) {
         seminarManager.addSeminarDate(localDate);
     }

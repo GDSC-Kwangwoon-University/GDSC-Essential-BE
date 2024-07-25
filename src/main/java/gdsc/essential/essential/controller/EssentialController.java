@@ -1,10 +1,11 @@
 package gdsc.essential.essential.controller;
 
+import gdsc.essential.seminar.BaseSeminarManagerImpl;
 import gdsc.essential.seminar.dto.DateRequestDto;
 import gdsc.essential.seminar.dto.SubmitRequestDto;
 import gdsc.essential.seminar.RecentSubmitSeminarInfo;
 import gdsc.essential.seminar.dto.SeminarDateResponseDto;
-import gdsc.essential.essential.service.EssentialService;
+import gdsc.essential.essential.service.EssentialServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,26 +25,41 @@ public class EssentialController {
 
     @PostMapping("/submit")
     public ResponseEntity<String> saveSumitData(@RequestBody SubmitRequestDto submitRequestDto) {
-        essentialService.addPresentor(submitRequestDto);
+        try {
+            essentialService.addPresentor(submitRequestDto);
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         return ResponseEntity.ok("success");
     }
 
 
     @GetMapping("/seminarDate")
     public ResponseEntity<SeminarDateResponseDto> getSeminarDate() {
-        return ResponseEntity.ok(SeminarDateResponseDto.of(essentialService.exractSeminarDates()));
+        try{
+            return ResponseEntity.ok(SeminarDateResponseDto.of(essentialService.exractSeminarDates()));
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(SeminarDateResponseDto.of(null));
+        }
     }
 
     @PostMapping("/addSeminarDate")
     public ResponseEntity<String> addSeminarDate(@RequestBody DateRequestDto localDate) {
-        System.out.println(localDate.getSeminarDate());
-        essentialService.addSeminarDate(localDate.getSeminarDate());
-        return ResponseEntity.ok("add Date success");
+        try {
+            essentialService.addSeminarDate(localDate.getSeminarDate());
+            return ResponseEntity.ok("add Date success");
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
     @GetMapping("/submit/info")
     public ResponseEntity<RecentSubmitSeminarInfo> getRecentSeminar() {
-        return ResponseEntity.ok(essentialService.recentSeminarRequest());
+        try {
+            return ResponseEntity.ok(essentialService.recentSeminarRequest());
+        }catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
