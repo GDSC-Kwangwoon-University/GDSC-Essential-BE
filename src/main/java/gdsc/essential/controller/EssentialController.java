@@ -26,7 +26,7 @@ public class EssentialController {
     @GetMapping("/submit/date")
     public ResponseEntity<String> submitDate(@RequestParam String id) {
 
-        if (targetSpeaker != null && targetSpeaker.equals(id)) {
+        if (targetSpeaker != null) {
             String date = targetSpeaker.getDate();
             if (date != null && date.isEmpty()) {
                 return ResponseEntity.ok("발표 날짜는 " + date + " 입니다.");
