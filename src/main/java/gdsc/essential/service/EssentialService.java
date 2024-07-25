@@ -2,7 +2,9 @@ package gdsc.essential.service;
 
 import gdsc.essential.domain.ApiResponse;
 import gdsc.essential.domain.SubmitRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +28,14 @@ public class EssentialService {
 
     // 2: 입력 받은 데이터 저장
     public void saveResponse(SubmitRequest request) {
-        int id = responses.size() + 1;
-        responses.add(new ApiResponse(id, request.date(), request.subject(), request.content()));
+        responses.add(new ApiResponse(responses.size() + 1, request.date(), request.subject(), request.content()));
     }
 
-    // 3: 모든 데이터 return
-    public List<ApiResponse> getAllResponses() {
-        return new ArrayList<>(responses);
+    // 3: 가장 최근의 데이터 return
+    public ApiResponse getLastResponse() {
+        if (responses.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No responses found.");
+        }
+        return responses.get(responses.size() - 1);
     }
 }

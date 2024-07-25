@@ -32,9 +32,9 @@ public class EssentialController {
         essentialService.saveResponse(request);
     }
 
-    // 3단계: api/v1/submit/info API - 현재까지 입력 받은 사항들 보여주기
+    // 3단계: api/v1/submit/info API - 가장 마지막으로 입력 받은 사항들 보여주기
     @GetMapping("/submit/info")
-    public List<ApiResponse> getAllResponses() {
-        return essentialService.getAllResponses();
+    public ApiResponse getLastResponses() {
+        return essentialService.getLastResponse();
     }
 }
